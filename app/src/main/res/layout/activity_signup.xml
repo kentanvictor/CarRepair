@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screenBackGround">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/su_iv_con"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/logo" />
+    <TextView
+        android:id="@+id/su_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="160dp"
+        android:text="@string/app_name"
+        android:textColor="#000"
+        android:textSize="23sp"
+        android:typeface="monospace" />
+    <RelativeLayout
+        android:id="@+id/su_rl_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/su_tv_title"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/rectangle_edittext">
+
+        <ImageView
+            android:id="@+id/su_iv_userIconName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingBottom="15dp"
+            android:paddingLeft="30dp"
+            android:paddingTop="15dp"
+            android:src="@mipmap/ic_edittextuname" />
+
+        <View
+            android:id="@+id/su_viewName"
+            android:layout_width="1dip"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/su_iv_userIconName"
+            android:background="@color/colorCursor" />
+
+        <EditText
+            android:id="@+id/su_et_userName"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/su_viewName"
+            android:background="@null"
+            android:ems="19"
+            android:hint="@string/login_hint_username"
+            android:textColorHint="@color/colorCursor"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/su_iv_nameClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/ic_backspace"
+            android:visibility="invisible" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/su_rl_useremail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/su_rl_username"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/rectangle_edittext">
+
+        <ImageView
+            android:id="@+id/su_iv_userIconEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingBottom="15dp"
+            android:paddingLeft="30dp"
+            android:paddingTop="15dp"
+            android:src="@mipmap/ic_email" />
+
+        <View
+            android:id="@+id/su_viewEmail"
+            android:layout_width="1dip"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/su_iv_userIconEmail"
+            android:background="@color/colorCursor" />
+
+        <EditText
+            android:id="@+id/su_et_userEmial"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/su_viewEmail"
+            android:background="@null"
+            android:ems="19"
+            android:inputType="textEmailAddress"
+            android:hint="@string/signup_hint_useremail"
+            android:textColorHint="@color/colorCursor"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/su_iv_emailClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/ic_backspace"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/su_rl_userPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/su_rl_useremail"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/rectangle_edittext">
+
+        <ImageView
+            android:id="@+id/su_iv_userIconPwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingBottom="15dp"
+            android:paddingLeft="30dp"
+            android:paddingTop="15dp"
+            android:src="@mipmap/ic_edittextupwd" />
+
+        <View
+            android:id="@+id/su_viewPwd"
+            android:layout_width="1dip"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/su_iv_userIconPwd"
+            android:background="@color/colorCursor" />
+
+        <EditText
+            android:id="@+id/su_et_password"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/su_viewPwd"
+            android:background="@null"
+            android:drawablePadding="5dp"
+            android:ems="19"
+            android:hint="@string/login_hint_passwd"
+            android:inputType="textPassword"
+            android:textColorHint="@color/colorCursor"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/su_iv_pwdClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/ic_backspace"
+            android:visibility="invisible" />
+    </RelativeLayout>
+    <Button
+        android:id="@+id/su_btn_signup"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/su_rl_userPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round_corner_bg"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/signup_bt"
+        android:textColor="#fff"
+        android:textSize="18sp" />
+
+
+</RelativeLayout>
