@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CnToolbar">
+
+
+        <attr name="rightButtonIcon" format="reference"/>
+        <attr name="isShowSearchView" format="boolean"/>
+
+    </declare-styleable>
+
+
+    <declare-styleable name="CToolBar">
+
+    <attr name="rcightButtonIcon" format="reference"/>
+
+    <attr name="icsShowSearchView" format="boolean"/>
+
+    <attr name="rcightButtonText" format="string"/>
+
+</declare-styleable>
+</resources>
