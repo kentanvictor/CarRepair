@@ -162,7 +162,7 @@ public class Contants {
                 case 6:
                     return titleNo6;
                 default:
-                    return dayNo1;
+                    return titleNo1;
             }
         }
 
@@ -172,6 +172,10 @@ public class Contants {
         private static String sliderUrl2 = "https://img1.tuhu.org/Home/Image/2F61F7B2D1E83F0094F31A279CA5BA6D.jpg";
         private static String sliderUrl3 = "https://img1.tuhu.org/Home/Image/2AFC383E74D85C3EC4D7D9D3ED39085E.png";
         private static String sliderUrl4 = "https://img1.tuhu.org/Home/Image/D76B4F5CA683C597E32B7D2F3B31A693.png";
+        private static String sliderText0 = "固特异品牌日";
+        private static String sliderText1 = "推轮捧新";
+        private static String sliderText2 = "胎压检测";
+        private static String sliderText3 = "远足野营，其乐无穷";
 
         public static String getUrl(int i) {
             switch (i) {
@@ -185,6 +189,20 @@ public class Contants {
                     return sliderUrl4;
                 default:
                     return sliderUrl1;
+            }
+        }
+        public static String getText(int i){
+            switch (i){
+                case 0:
+                    return sliderText0;
+                case 1:
+                    return sliderText1;
+                case 2:
+                    return sliderText2;
+                case 3:
+                    return sliderText3;
+                default:
+                    return sliderText0;
             }
         }
     }

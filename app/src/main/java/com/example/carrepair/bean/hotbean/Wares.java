@@ -2,10 +2,12 @@ package com.example.carrepair.bean.hotbean;
 
 import java.io.Serializable;
 
+import cn.bmob.v3.BmobObject;
+
 /**
  * 商品
  */
-public class Wares implements Serializable {
+public class Wares extends BmobObject implements Serializable {
     private Long id;
     private String name;
     private String imgUrl;

@@ -8,11 +8,14 @@ package com.example.carrepair.bean.recyclerbean;
 
 import java.io.Serializable;
 
+import cn.bmob.v3.BmobObject;
+
 /**
  * 首页三个大图数据
  */
-public class HomeCampaign implements Serializable {
+public class HomeCampaign extends BmobObject implements Serializable {
     private Long id;
+    private String name;
     private String title;
     private Campaign cpOne;
     private Campaign cpTwo;
@@ -42,6 +45,13 @@ public class HomeCampaign implements Serializable {
         this.cpThree = cpThree;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;

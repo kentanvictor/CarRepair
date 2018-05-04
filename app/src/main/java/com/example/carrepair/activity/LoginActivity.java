@@ -94,16 +94,6 @@ public class LoginActivity extends AppCompatActivity {
         query.findObjects(new FindListener<User>() {
             @Override
             public void done(List<User> list, BmobException e) {
-                if (e == null) {
-                    if (list.get(0).getEmail().equals(root) && list.get(0).getPwd().equals(root)) {
-                        user = list.get(0);
-                        //root用户保存本地
-                        MyApplication root = MyApplication.getInstance();
-                        root.putUser(user, list.get(0).getPwd());
-                        //管理员登录，跳转到修改数据界面。
-                        Intent intent = new Intent(LoginActivity.this, RootActivity.class);
-                        startActivity(intent);
-                    }
                     if (list.size() != 0) {
                         Log.d("password test", "done: " + list.get(0).getPwd());
                         if (list.get(0).getPwd().equals(pwd)) {
@@ -126,10 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         ToastUtils.show(LoginActivity.this, "没有找到该用户");
                     }
-                } else {
-                    ToastUtils.show(LoginActivity.this, e.toString());
                 }
-            }
         });
 
     }

@@ -11,6 +11,7 @@ import com.example.carrepair.R;
 import com.example.carrepair.adapter.baseadapter.BaseViewHolder;
 import com.example.carrepair.adapter.baseadapter.SimpleAdapter;
 import com.example.carrepair.bean.hotbean.Wares;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -34,7 +35,9 @@ public class WaresAdapter extends SimpleAdapter<Wares> {
         viewHoder.getTextView(R.id.text_price_cate).setText("￥"+item.getPrice());
         SimpleDraweeView draweeView = (SimpleDraweeView) viewHoder.getView(R.id.drawee_view);
         //绑定url
-        draweeView.setImageURI(Uri.parse(item.getImgUrl()));
+        //draweeView.setImageURI(Uri.parse(item.getImgUrl()));
+        Picasso.with(context).load(item.getImgUrl()).into(draweeView);
+
         viewHoder.getView(R.id.btn_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

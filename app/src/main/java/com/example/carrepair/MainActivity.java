@@ -3,26 +3,39 @@ package com.example.carrepair;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.example.carrepair.bean.Banner;
+import com.example.carrepair.bean.SliderBean;
 import com.example.carrepair.bean.Tab;
+import com.example.carrepair.bean.hotbean.Wares;
+import com.example.carrepair.bean.recyclerbean.Campaign;
+import com.example.carrepair.bean.recyclerbean.HomeCampaign;
 import com.example.carrepair.fragment.CartFragment;
 import com.example.carrepair.fragment.CategoryFragment;
 import com.example.carrepair.fragment.HomeFragment;
 import com.example.carrepair.fragment.MineFragment;
 import com.example.carrepair.widget.CnToolbar;
+import com.example.carrepair.widget.Contants;
 import com.example.carrepair.widget.FragmentTabHost;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobBatch;
+import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BatchResult;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.QueryListListener;
 
 /**
  * MainActivity
@@ -37,9 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
     private CnToolbar mToolbar;
 
-    public static String BMOBAPPID = "a93dee828562ff3c2fa71098e3af2ed8";
+    public static String BMOBAPPID = "7d90889fd39840bdd82841531f4c8513";
 
     private List<Tab> mTabs = new ArrayList<>(5);
+    private static String TAG = "Bmob";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +66,67 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         Bmob.initialize(this, BMOBAPPID);
+        //初始化数据
+       /* final String imgeUrl = "https://img1.tuhu.org/Home/Image/2E3206E5A43D7B8CB089596240C8D9A2.jpg";
+        final String imgeUrl2 = "https://img1.tuhu.org/Home/Image/579F320072C62962BE2C3274920D7939.png";
+        final String nameTest1 = "Hello";
+        final String nameTest2 = "World";
+        Banner test = new Banner();
+        Banner test2 = new Banner();
+        test.setImgUrl(imgeUrl);
+        test.setName(nameTest1);
+        test.setDescription("轮播");
+        test2.setImgUrl(imgeUrl2);
+        test2.setName(nameTest2);
+        test2.setDescription("轮播");
+        List<BmobObject> BannerList = new ArrayList<>();
+        BannerList.add(test);
+        BannerList.add(test2);
+        new BmobBatch().insertBatch(BannerList).doBatch(new QueryListListener<BatchResult>() {
+            @Override
+            public void done(List<BatchResult> list, BmobException e) {
+                for(int i=0;i<list.size();i++){
+                    BatchResult result = list.get(i);
+                    BmobException ex =result.getError();
+                    if(ex==null){
+                        Log.d(TAG,"第" + i + "个数据批量添加成功：" + result.getCreatedAt() + "," + result.getObjectId() + "," + result.getUpdatedAt());
+                    }else{
+                        Log.d(TAG,"第"+i+"个数据批量添加失败："+ex.getMessage()+","+ex.getErrorCode());
+                    }
+                }
+            }
+        });*/
+      /* SliderBean[] sliderbean = new SliderBean[4];
+        for (int i = 0; i < sliderbean.length; i++) {
+            sliderbean[i] = new SliderBean();
+        }
+        for (int i = 0; i < sliderbean.length; i++) {
+            sliderbean[i].setImageUrl(Contants.SLIDER.getUrl(i));
+            sliderbean[i].setImageText(Contants.SLIDER.getText(i));
+        }
+        List<BmobObject> SliderViewList = new ArrayList<>();
+            for (int i= 0;i < sliderbean.length;i++){
+                SliderViewList.add(sliderbean[i]);
+            }
+        //上传数据到服务器
+        new BmobBatch().insertBatch(SliderViewList).doBatch(new QueryListListener<BatchResult>() {
+            @Override
+            public void done(List<BatchResult> list, BmobException e) {
+                if(e==null){
+                    for(int i=0;i<list.size();i++){
+                        BatchResult result = list.get(i);
+                        BmobException ex =result.getError();
+                        if(ex==null){
+                            Log.d(TAG,"第" + i + "个数据批量添加成功：" + result.getCreatedAt() + "," + result.getObjectId() + "," + result.getUpdatedAt());
+                        }else{
+                            Log.d(TAG,"第"+i+"个数据批量添加失败："+ex.getMessage()+","+ex.getErrorCode());
+                        }
+                    }
+                }else{
+                Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+            }
+            }
+        });*/
     }
 
     private void initToolBar() {

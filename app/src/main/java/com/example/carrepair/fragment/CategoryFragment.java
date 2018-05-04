@@ -19,6 +19,7 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.example.carrepair.bean.SliderBean;
 import com.example.carrepair.widget.Contants;
 import com.example.carrepair.R;
 import com.example.carrepair.adapter.baseadapter.BaseAdapter;
@@ -35,11 +36,15 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+
 /**
  * 分类列表
  */
 public class CategoryFragment extends Fragment {
-    String[] nameset = {"机油更换","空气滤清器","机油滤清器","雨刷","更换防冻液","刹车油","火花塞","变速箱油"};
+    String[] nameset = {"汽车保养美容服务", "汽车部件更换维修服务", "人工服务"};
 
     @ViewInject(R.id.recyclerview_category)
     private RecyclerView mRecyclerView;
@@ -89,12 +94,13 @@ public class CategoryFragment extends Fragment {
                 refreshData();
 
             }
+
             @Override
             public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
                 if (currPage <= totalPage)
                     loadMoreData();
                 else {
-                    Log.d("test","currPage and totalPage");
+                    Log.d("test", "currPage and totalPage");
                     Toast.makeText(getContext(), "没有数据了...", Toast.LENGTH_SHORT).show();
                     mRefreshLaout.finishRefreshLoadMore();
                 }
@@ -106,14 +112,15 @@ public class CategoryFragment extends Fragment {
     private void refreshData() {
         currPage = 1;
         state = STATE_REFREH;
-        Log.d("refresh","test");
-        requestWares(category_id);
+        Log.d("refresh", "test");
+        requestData(category_id);
 
     }
+
     private void loadMoreData() {
         currPage = ++currPage;
         state = STATE_MORE;
-        requestWares(category_id);
+        requestData(category_id);
 
     }
 
@@ -122,28 +129,29 @@ public class CategoryFragment extends Fragment {
      */
     private void requestCategoryData() {
         //侧边选择栏
-        Category[] categories = new Category[8];
-        for (int i = 0 ; i < categories.length;i++){
+        Category[] categories = new Category[nameset.length];
+        for (int i = 0; i < categories.length; i++) {
             categories[i] = new Category();
         }
-       for (int i = 0 ; i < categories.length;i++){
+        for (int i = 0; i < categories.length; i++) {
             categories[i].setName(nameset[i]);
             categories[i].setId(i);
-       }
+        }
         List<Category> catest = new ArrayList<>();
-       for (int i = 0; i < categories.length;i++){
-           catest.add(categories[i]);
-       }
+        for (int i = 0; i < categories.length; i++) {
+            catest.add(categories[i]);
+        }
         showCategoryData(catest);
 
         if (catest != null && catest.size() > 0)
             category_id = catest.get(0).getId();
-        requestWares(category_id);
+        requestData(category_id);
 
     }
 
     /**
      * 左部导航
+     *
      * @param categories 导航列表
      */
     private void showCategoryData(List<Category> categories) {
@@ -163,8 +171,8 @@ public class CategoryFragment extends Fragment {
                 //获取列表数据id
                 category_id = category.getId();
 
-                Log.d("catetest","test");
-                requestWares(category_id);
+                Log.d("catetest", "test");
+                requestData(category_id);
 
 
             }
@@ -184,21 +192,21 @@ public class CategoryFragment extends Fragment {
      */
     private void requestBannerData() {
         //banner滑动框
-        final String imgeUrl = "https://img1.tuhu.org/Home/Image/2E3206E5A43D7B8CB089596240C8D9A2.jpg";
-        final String imgeUrl2 = "https://img1.tuhu.org/Home/Image/579F320072C62962BE2C3274920D7939.png";
-        final String nameTest1 = "Hello";
-        final String nameTest2 = "World";
-        Banner test = new Banner();
-        Banner test2 = new Banner();
-        test.setImgUrl(imgeUrl);
-        test.setName(nameTest1);
-        test2.setImgUrl(imgeUrl2);
-        test2.setName(nameTest2);
-        List<Banner> bannerTest = new ArrayList<>();
+        BmobQuery<Banner> query = new BmobQuery<Banner>();
+        query.findObjects(new FindListener<Banner>() {
+            @Override
+            public void done(final List<Banner> list, BmobException e) {
+                if (e == null) {
+                   showSliderViews(list);
+                } else {
+                    Toast.makeText(getActivity(), "失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+       /* List<Banner> bannerTest = new ArrayList<>();
         bannerTest.add(test);
         bannerTest.add(test2);
-        showSliderViews(bannerTest);
-
+        showSliderViews(bannerTest);*/
     }
 
     /**
@@ -212,81 +220,82 @@ public class CategoryFragment extends Fragment {
                 sliderView.description(banner.getName());
                 sliderView.setScaleType(BaseSliderView.ScaleType.Fit);
                 mSliderLayout.addSlider(sliderView);
-
             }
+            mSliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+            mSliderLayout.setCustomAnimation(new DescriptionAnimation());
+            mSliderLayout.setPresetTransformer(SliderLayout.Transformer.Default);
+            mSliderLayout.setDuration(3000);
+
         }
-        mSliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mSliderLayout.setCustomAnimation(new DescriptionAnimation());
-        mSliderLayout.setPresetTransformer(SliderLayout.Transformer.Default);
-        mSliderLayout.setDuration(3000);
     }
 
     /**
      * 请求wares数据，并传入列表id
+     *
      * @param categoryId 传入的点击的列表id显示该id对应商品
      */
-    private void requestWares(long categoryId) {
-        //商品选择框
-        Wares[] oilWares = new Wares[3];
-        Wares[] filterWares = new Wares[3];
-        //初始化
-        for (int i = 0; i < oilWares.length;i++)
-        {
-            oilWares[i] = new Wares();
-            filterWares[i] = new Wares();
-        }
-        String[] oilUrl = new String[3];
-        String[] oilDes = new String[3];
-        float[] oilPrice = new float[3];
-        String[] filterUrl = new String[3];
-        String[] filterDes = new String[3];
-        float[] filterPrice = new float[3];
-        for (int i = 0; i < oilUrl.length; i++) {
-            oilUrl[i] = Contants.OIL.getOilUrl(i);
-            oilDes[i] = Contants.OIL.getOilDes(i);
-            oilPrice[i] = Contants.OIL.getOilPrice(i);
-            filterUrl[i] = Contants.FILTER.getFilterUrl(i);
-            filterDes[i] = Contants.FILTER.getFilterName(i);
-            filterPrice[i] = Contants.FILTER.getFilterPrice(i);
-        }
-        for (int i = 0; i < oilWares.length; i++) {
-            oilWares[i].setId((long)i);
-            oilWares[i].setImgUrl(oilUrl[i]);
-            oilWares[i].setName(oilDes[i]);
-            oilWares[i].setPrice(oilPrice[i]);
-            filterWares[i].setId((long) i);
-            filterWares[i].setImgUrl(filterUrl[i]);
-            filterWares[i].setName(filterDes[i]);
-            filterWares[i].setPrice(filterPrice[i]);
-        }
-        switch ((int) categoryId){
-            case 0:
-                List<Wares> waresList = new ArrayList<>();
-                for (int i = 0; i < oilWares.length;i++){
-                    waresList.add(oilWares[i]);
-                }
-                Log.d("switchtest","test1");
-                Page<Wares> waresPage = new Page<>();
-                waresPage.setList(waresList);
-                showWaresData(waresList);
-                break;
-            case 1:
-                List<Wares> filterList = new ArrayList<>();
-                for (int i = 0; i < filterWares.length;i++){
-                    filterList.add(filterWares[i]);
-                }
-                Log.d("switchtest","test2");
-                Page<Wares> filterPage = new Page<>();
-                filterPage.setList(filterList);
-                showWaresData(filterList);
-                break;
-        }
-
-    }
+//    private void requestWares(long categoryId) {
+//        //商品选择框
+//        Wares[] oilWares = new Wares[3];
+//        Wares[] filterWares = new Wares[3];
+//        //初始化
+//        for (int i = 0; i < oilWares.length; i++) {
+//            oilWares[i] = new Wares();
+//            filterWares[i] = new Wares();
+//        }
+//        String[] oilUrl = new String[3];
+//        String[] oilDes = new String[3];
+//        float[] oilPrice = new float[3];
+//        String[] filterUrl = new String[3];
+//        String[] filterDes = new String[3];
+//        float[] filterPrice = new float[3];
+//        for (int i = 0; i < oilUrl.length; i++) {
+//            oilUrl[i] = Contants.OIL.getOilUrl(i);
+//            oilDes[i] = Contants.OIL.getOilDes(i);
+//            oilPrice[i] = Contants.OIL.getOilPrice(i);
+//            filterUrl[i] = Contants.FILTER.getFilterUrl(i);
+//            filterDes[i] = Contants.FILTER.getFilterName(i);
+//            filterPrice[i] = Contants.FILTER.getFilterPrice(i);
+//        }
+//        for (int i = 0; i < oilWares.length; i++) {
+//            oilWares[i].setId((long) i);
+//            oilWares[i].setImgUrl(oilUrl[i]);
+//            oilWares[i].setName(oilDes[i]);
+//            oilWares[i].setPrice(oilPrice[i]);
+//            filterWares[i].setId((long) i);
+//            filterWares[i].setImgUrl(filterUrl[i]);
+//            filterWares[i].setName(filterDes[i]);
+//            filterWares[i].setPrice(filterPrice[i]);
+//        }
+//        switch ((int) categoryId) {
+//            case 0:
+//                List<Wares> waresList = new ArrayList<>();
+//                for (int i = 0; i < oilWares.length; i++) {
+//                    waresList.add(oilWares[i]);
+//                }
+//                Log.d("switchtest", "test1");
+//                Page<Wares> waresPage = new Page<>();
+//                waresPage.setList(waresList);
+//                showWaresData(waresList);
+//                break;
+//            case 1:
+//                List<Wares> filterList = new ArrayList<>();
+//                for (int i = 0; i < filterWares.length; i++) {
+//                    filterList.add(filterWares[i]);
+//                }
+//                Log.d("switchtest", "test2");
+//                Page<Wares> filterPage = new Page<>();
+//                filterPage.setList(filterList);
+//                showWaresData(filterList);
+//                break;
+//        }
+//
+//    }
 
     /**
      * 显示wares数据
      */
+
     private void showWaresData(List<Wares> wares) {
         switch (state) {
             case STATE_NORMAL:
@@ -313,6 +322,95 @@ public class CategoryFragment extends Fragment {
                 mRefreshLaout.finishRefreshLoadMore();
                 break;
         }
+    }
+
+    /**
+     * 请求wares数据，并传入列表id
+     *
+     * @param categoryId 传入的点击的列表id显示该id对应商品
+     */
+    private void requestData(long categoryId) {
+        BmobQuery<Wares> query = new BmobQuery<Wares>();
+        switch ((int) categoryId) {
+            case 0:
+                //查询oilWares里面数据
+                query.addWhereEqualTo("description", "美容");
+                query.setLimit(50);
+                query.findObjects(new FindListener<Wares>() {
+                    @Override
+                    public void done(List<Wares> list, BmobException e) {
+                        if (e == null) {
+                            Toast.makeText(getActivity(), "查询成功，共" + list.size() + "条数据。", Toast.LENGTH_SHORT).show();
+                            //数据拉去得到之后的处理
+                            Log.d("switchtest", "test1");
+                            Page<Wares> waresPage = new Page<>();
+                            waresPage.setList(list);
+                            showWaresData(list);
+                        } else {
+                            Toast.makeText(getActivity(), "失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+            case 1:
+                query.addWhereEqualTo("description", "维修");
+                query.setLimit(50);
+                query.findObjects(new FindListener<Wares>() {
+                    @Override
+                    public void done(List<Wares> list, BmobException e) {
+                        if (e == null) {
+                            Toast.makeText(getActivity(), "查询成功，共" + list.size() + "条数据。", Toast.LENGTH_SHORT).show();
+                            //数据拉去得到之后的处理
+                            Log.d("switchtest", "test1");
+                            Page<Wares> waresPage = new Page<>();
+                            waresPage.setList(list);
+                            showWaresData(list);
+                        } else {
+                            Toast.makeText(getActivity(), "失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+            case 2:
+                query.addWhereEqualTo("description", "人工");
+                query.setLimit(50);
+                query.findObjects(new FindListener<Wares>() {
+                    @Override
+                    public void done(List<Wares> list, BmobException e) {
+                        if (e == null) {
+                            Toast.makeText(getActivity(), "查询成功，共" + list.size() + "条数据。", Toast.LENGTH_SHORT).show();
+                            //数据拉去得到之后的处理
+                            Log.d("switchtest", "test1");
+                            Page<Wares> waresPage = new Page<>();
+                            waresPage.setList(list);
+                            showWaresData(list);
+                        } else {
+                            Toast.makeText(getActivity(), "失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+            default:
+                query.addWhereEqualTo("description", "美容");
+                query.setLimit(50);
+                query.findObjects(new FindListener<Wares>() {
+                    @Override
+                    public void done(List<Wares> list, BmobException e) {
+                        if (e == null) {
+                            Toast.makeText(getActivity(), "查询成功，共" + list.size() + "条数据。", Toast.LENGTH_SHORT).show();
+                            //数据拉去得到之后的处理
+                            Log.d("switchtest", "test1");
+                            Page<Wares> waresPage = new Page<>();
+                            waresPage.setList(list);
+                            showWaresData(list);
+                        } else {
+                            Toast.makeText(getActivity(), "失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+        }
+
     }
 }
 
