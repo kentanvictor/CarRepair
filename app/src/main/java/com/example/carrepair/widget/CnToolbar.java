@@ -137,13 +137,18 @@ public class CnToolbar extends Toolbar implements View.OnClickListener {
     }
 
     private void searchKey(String key) {
-        if (key.contains("机油")) {
+        if (key.contains("美容")) {
             WaresListActivity.waresList = 0;
             Intent intent = new Intent(getContext(), WaresListActivity.class);
             getContext().startActivity(intent);
         }
-        if (key.contains("清洁剂")) {
+        if (key.contains("维修")) {
             WaresListActivity.waresList = 1;
+            Intent intent = new Intent(getContext(), WaresListActivity.class);
+            getContext().startActivity(intent);
+        }
+        if (key.contains("人工")) {
+            WaresListActivity.waresList = 2;
             Intent intent = new Intent(getContext(), WaresListActivity.class);
             getContext().startActivity(intent);
         }

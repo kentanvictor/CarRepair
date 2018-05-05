@@ -8,58 +8,54 @@
     android:layout_marginRight="5dp"
     android:layout_marginTop="2dp"
     app:cardBackgroundColor="#fff"
-    app:contentPadding="10dp"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="4dp"
+    app:contentPadding="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_list_item"
-        android:padding="5dp"
-        >
+        android:padding="5dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/drawee_view"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:id="@+id/drawee_view"
             android:layout_alignParentLeft="true"
-            app:viewAspectRatio="1"
-            />
+            android:background="@null"
+            app:viewAspectRatio="1" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/drawee_view"
             android:minHeight="75dp"
-            android:layout_toRightOf="@+id/drawee_view">>
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/text_title_cate"
+                style="@style/ware_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                style="@style/ware_title"
-                />
+                android:layout_weight="1" />
 
             <View
                 style="@style/line_horizontal"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/text_price_cate"
                     style="@style/ware_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    />
+                    android:layout_centerVertical="true" />
 
                 <Button
                     android:id="@+id/btn_add"
@@ -70,14 +66,8 @@
                     android:layout_centerVertical="true"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
-                    android:text="立即购买"
-                    />
+                    android:text="立即购买" />
             </RelativeLayout>
-
-
         </LinearLayout>
-
-
     </RelativeLayout>
-
 </android.support.v7.widget.CardView>

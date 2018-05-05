@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
@@ -20,6 +21,10 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 public class WaresListActivity extends BaseActivity{
     public static int waresList = 999;
@@ -34,9 +39,7 @@ public class WaresListActivity extends BaseActivity{
     private static final int STATE_MORE = 2;
     private int state = STATE_NORMAL;
 
-
-
-
+    
     @ViewInject(R.id.recycle_view)
     private RecyclerView mRecycleViewWares;
     @ViewInject(R.id.refresh_layout_category)
@@ -102,67 +105,98 @@ public class WaresListActivity extends BaseActivity{
 
 
     private void requestWares(int categoryId) {
-        //商品选择框
-        Wares[] oilWares = new Wares[3];
-        Wares[] filterWares = new Wares[3];
-        //初始化
-        for (int i = 0; i < oilWares.length;i++)
-        {
-            oilWares[i] = new Wares();
-            filterWares[i] = new Wares();
-        }
-        String[] oilUrl = new String[3];
-        String[] oilDes = new String[3];
-        float[] oilPrice = new float[3];
-        String[] filterUrl = new String[3];
-        String[] filterDes = new String[3];
-        float[] filterPrice = new float[3];
-        for (int i = 0; i < oilUrl.length; i++) {
-            oilUrl[i] = Contants.OIL.getOilUrl(i);
-            oilDes[i] = Contants.OIL.getOilDes(i);
-            oilPrice[i] = Contants.OIL.getOilPrice(i);
-            filterUrl[i] = Contants.FILTER.getFilterUrl(i);
-            filterDes[i] = Contants.FILTER.getFilterName(i);
-            filterPrice[i] = Contants.FILTER.getFilterPrice(i);
-        }
-        for (int i = 0; i < oilWares.length; i++) {
-            oilWares[i].setId((long)i);
-            oilWares[i].setImgUrl(oilUrl[i]);
-            oilWares[i].setName(oilDes[i]);
-            oilWares[i].setPrice(oilPrice[i]);
-            filterWares[i].setId((long) i);
-            filterWares[i].setImgUrl(filterUrl[i]);
-            filterWares[i].setName(filterDes[i]);
-            filterWares[i].setPrice(filterPrice[i]);
-        }
+        BmobQuery<Wares> query = new BmobQuery<Wares>();
         switch (categoryId){
             case 0:
-                List<Wares> waresList = new ArrayList<>();
-                for (int i = 0; i < oilWares.length;i++){
-                    waresList.add(oilWares[i]);
-                }
-                Log.d("switchtest","test1");
-                Page<Wares> waresPage = new Page<>();
-                waresPage.setList(waresList);
-                mWaresAdatper = new WaresAdapter(getBaseContext(),waresList);
-                mRecycleViewWares.setAdapter(mWaresAdatper);
-                mRecycleViewWares.setLayoutManager(new GridLayoutManager(getBaseContext(), 1));
-                mRecycleViewWares.setItemAnimator(new DefaultItemAnimator());
+                query.addWhereEqualTo("description", "美容");
+                query.setLimit(50);
+                query.findObjects(new FindListener<Wares>() {
+                    @Override
+                    public void done(List<Wares> list, BmobException e) {
+                        if (e == null) {
+                            Toast.makeText(WaresListActivity.this, "查询成功，共" + list.size() + "条数据。", Toast.LENGTH_SHORT).show();
+                            //数据拉去得到之后的处理
+                            Log.d("switchtest", "test1");
+                            Page<Wares> waresPage = new Page<>();
+                            waresPage.setList(list);
+                            showWaresData(list);
+                        } else {
+                            Toast.makeText(WaresListActivity.this, "失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
                 break;
             case 1:
-                List<Wares> filterList = new ArrayList<>();
-                for (int i = 0; i < filterWares.length;i++){
-                    filterList.add(filterWares[i]);
-                }
-                Log.d("switchtest","test2");
-                Page<Wares> filterPage = new Page<>();
-                filterPage.setList(filterList);
-                mWaresAdatper = new WaresAdapter(getBaseContext(),filterList);
-                mRecycleViewWares.setAdapter(mWaresAdatper);
-                mRecycleViewWares.setLayoutManager(new GridLayoutManager(getBaseContext(), 1));
-                mRecycleViewWares.setItemAnimator(new DefaultItemAnimator());
+                query.addWhereEqualTo("description", "维修");
+                query.setLimit(50);
+                query.findObjects(new FindListener<Wares>() {
+                    @Override
+                    public void done(List<Wares> list, BmobException e) {
+                        if (e == null) {
+                            Toast.makeText(WaresListActivity.this, "查询成功，共" + list.size() + "条数据。", Toast.LENGTH_SHORT).show();
+                            //数据拉去得到之后的处理
+                            Log.d("switchtest", "test1");
+                            Page<Wares> waresPage = new Page<>();
+                            waresPage.setList(list);
+                            showWaresData(list);
+                        } else {
+                            Toast.makeText(WaresListActivity.this, "失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+            case 2:
+                query.addWhereEqualTo("description", "人工");
+                query.setLimit(50);
+                query.findObjects(new FindListener<Wares>() {
+                    @Override
+                    public void done(List<Wares> list, BmobException e) {
+                        if (e == null) {
+                            Toast.makeText(WaresListActivity.this, "查询成功，共" + list.size() + "条数据。", Toast.LENGTH_SHORT).show();
+                            //数据拉去得到之后的处理
+                            Log.d("switchtest", "test1");
+                            Page<Wares> waresPage = new Page<>();
+                            waresPage.setList(list);
+                            showWaresData(list);
+                        } else {
+                            Toast.makeText(WaresListActivity.this, "失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
                 break;
         }
 
+    }
+
+    /**
+     * 显示wares数据
+     */
+
+    private void showWaresData(List<Wares> wares) {
+        switch (state) {
+            case STATE_NORMAL:
+                if (mWaresAdatper == null) {
+                    mWaresAdatper = new WaresAdapter(WaresListActivity.this, wares);
+                    mRecycleViewWares.setAdapter(mWaresAdatper);
+                    mRecycleViewWares.setLayoutManager(new GridLayoutManager(WaresListActivity.this, 1));
+                    mRecycleViewWares.setItemAnimator(new DefaultItemAnimator());
+                    //mRecyclerviewWares.addItemDecoration(new DividerGridItemDecoration(getContext()));
+                } else {
+                    mWaresAdatper.clearData();
+                    mWaresAdatper.addData(wares);
+                }
+                break;
+            case STATE_REFREH:
+                mWaresAdatper.clearData();
+                mWaresAdatper.addData(wares);
+                mRecycleViewWares.scrollToPosition(0);
+                mRefreshLaout.finishRefresh();
+                break;
+            case STATE_MORE:
+                mWaresAdatper.addData(mWaresAdatper.getDatas().size(), wares);
+                mRecycleViewWares.scrollToPosition(mWaresAdatper.getDatas().size());
+                mRefreshLaout.finishRefreshLoadMore();
+                break;
+        }
     }
 }

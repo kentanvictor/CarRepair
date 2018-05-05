@@ -19,6 +19,8 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.example.carrepair.adapter.HomeAdapter;
+import com.example.carrepair.bean.HomeBean;
 import com.example.carrepair.bean.SliderBean;
 import com.example.carrepair.bean.hotbean.Page;
 import com.example.carrepair.bean.hotbean.Wares;
@@ -55,6 +57,7 @@ public class HomeFragment extends Fragment {
     private Gson mGson = new Gson();
     private List<Banner> mBanner;
     private Context mContext;
+    private int i = 0;
 
     @Nullable
     @Override
@@ -67,6 +70,7 @@ public class HomeFragment extends Fragment {
         requestImages();
         initSlider();
         initRecyclerView(view);
+        //initmRecyclerView(view);
         return view;
     }
 
@@ -74,7 +78,7 @@ public class HomeFragment extends Fragment {
     private void requestImages() {
         initSlider();
     }
-
+    //初始化滑动推送数据
     private void initRecyclerView(View view) {
         mRecyclerView = view.findViewById(R.id.recyclerview);
         BmobQuery<HomeCampaign> query = new BmobQuery<HomeCampaign>();
@@ -99,6 +103,28 @@ public class HomeFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecortion());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
     }
+    //初始化滑动推送数据
+   /* private void initmRecyclerView(View view){
+        mRecyclerView = view.findViewById(R.id.mRecyclerView);
+        BmobQuery<HomeBean> query = new BmobQuery<HomeBean>();
+        query.findObjects(new FindListener<HomeBean>() {
+            @Override
+            public void done(List<HomeBean> list, BmobException e) {
+              if (e == null){
+                  Toast.makeText(getActivity(), "查询成功，共" + list.size() + "条数据。", Toast.LENGTH_SHORT).show();
+                  //数据拉去得到之后的处理
+                  Log.d("BmobTest", "test1");
+                  mHomeAdapter = new HomeAdapter(list,getContext());
+                  mRecyclerView.setAdapter(mHomeAdapter);
+              }else{
+                  Toast.makeText(getActivity(), "失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+              }
+            }
+        });
+        //设置边距
+        mRecyclerView.addItemDecoration(new DividerItemDecortion());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+    }*/
 
     //获取主页商品数据
     private void initData(List<HomeCampaign> homeCampaigns) {

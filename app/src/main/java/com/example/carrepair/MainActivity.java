@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 
 import com.example.carrepair.bean.Banner;
+import com.example.carrepair.bean.HomeBean;
 import com.example.carrepair.bean.SliderBean;
 import com.example.carrepair.bean.Tab;
 import com.example.carrepair.bean.hotbean.Wares;
@@ -36,6 +37,7 @@ import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BatchResult;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.QueryListListener;
+import cn.bmob.v3.listener.SaveListener;
 
 /**
  * MainActivity
@@ -67,32 +69,18 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         Bmob.initialize(this, BMOBAPPID);
         //初始化数据
-       /* final String imgeUrl = "https://img1.tuhu.org/Home/Image/2E3206E5A43D7B8CB089596240C8D9A2.jpg";
-        final String imgeUrl2 = "https://img1.tuhu.org/Home/Image/579F320072C62962BE2C3274920D7939.png";
-        final String nameTest1 = "Hello";
-        final String nameTest2 = "World";
-        Banner test = new Banner();
-        Banner test2 = new Banner();
-        test.setImgUrl(imgeUrl);
-        test.setName(nameTest1);
-        test.setDescription("轮播");
-        test2.setImgUrl(imgeUrl2);
-        test2.setName(nameTest2);
-        test2.setDescription("轮播");
-        List<BmobObject> BannerList = new ArrayList<>();
-        BannerList.add(test);
-        BannerList.add(test2);
-        new BmobBatch().insertBatch(BannerList).doBatch(new QueryListListener<BatchResult>() {
+      /*  final String homeTitle = "关于我们";
+        final String homeDes = "地址：哈尔滨市南岗区黑龙江大学汽车维修店 客服电话：0451-00000000";
+        HomeBean homeBean = new HomeBean();
+        homeBean.setHomeTitle(homeTitle);
+        homeBean.setHomeDes(homeDes);
+        homeBean.save(new SaveListener<String>() {
             @Override
-            public void done(List<BatchResult> list, BmobException e) {
-                for(int i=0;i<list.size();i++){
-                    BatchResult result = list.get(i);
-                    BmobException ex =result.getError();
-                    if(ex==null){
-                        Log.d(TAG,"第" + i + "个数据批量添加成功：" + result.getCreatedAt() + "," + result.getObjectId() + "," + result.getUpdatedAt());
-                    }else{
-                        Log.d(TAG,"第"+i+"个数据批量添加失败："+ex.getMessage()+","+ex.getErrorCode());
-                    }
+            public void done(String objectId, BmobException e) {
+                if (e == null){
+                    Log.d(TAG,"数据添加成功"+objectId);
+                }else {
+                    Log.d(TAG, "done: 创建数据失败"+e.getMessage());
                 }
             }
         });*/
